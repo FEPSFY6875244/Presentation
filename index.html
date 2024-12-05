@@ -3,7 +3,87 @@
  <video src="Presentation.mp4" width="800" height="450" controls>
  </video>
   
-  
+  <!-- //////////////////////////////////////////////////////////////////////////////// -->
+  <!-- ////////////////////////////// Adding last update ////////////////////////////// -->
+  <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- Last commit time display -->
+<div id="last-updated">Loading last update time...</div>
+<!-- Verify Button -->
+<button onclick="verifyLastUpdatedTime()" style="display: block; margin: 10px auto; padding: 8px 16px;">
+    Verify Last Modified Time
+</button>
+<script>
+    async function getLastUpdatedTime() {
+        const username = 'FEPSFY6875244';
+        const repo = 'Presentation';
+       
+        const url = `https://api.github.com/repos/${username}/${repo}/commits`;
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error fetching data: ${response.status} - ${response.statusText}`);
+            }
+            const commits = await response.json();
+            if (commits && commits.length > 0) {
+                const lastCommitDate = new Date(commits[0].commit.committer.date);
+               
+                // Displaying the time on load
+                document.getElementById('last-updated').innerText = `Last Modified Time: ${lastCommitDate.toLocaleString()}`;
+            } else {
+                document.getElementById('last-updated').innerText = 'No commits found in the repository.';
+            }
+        } catch (error) {
+            console.error('Error fetching the last updated time:', error);
+            document.getElementById('last-updated').innerText = 'Error fetching update time. Please check the repository details.';
+        }
+    }
+    // Function to verify the last update time by re-fetching it from the API
+    async function verifyLastUpdatedTime() {
+        document.getElementById('last-updated').innerText = 'Verifying...';
+        await getLastUpdatedTime();
+        alert("Last modified time has been successfully verified from GitHub API.");
+    }
+    // Initial load to display the time on page load
+    window.onload = getLastUpdatedTime;
+</script>
+
+
+ <!-- //////////////////////////////////////////////////////////////////////////////// -->
+  <!-- ////////////////////////////// Word count function ////////////////////////////// -->
+  <!-- //////////////////////////////////////////////////////////////////////////////// -->
+<!-- Placeholder for total word count -->
+<p id="totalWordCount"></p>
+<hr>
+<script>
+  // Function to calculate and display word count for a specified section
+  function displayWordCount(sectionId, outputId) {
+    // Get the text content from the specified section
+    const text = document.getElementById(sectionId).textContent;
+    // Split text into words based on spaces and filter out any empty strings
+    const wordArray = text.trim().split(/\s+/);
+    // Count the words
+    const wordCount = wordArray.length;
+    // Return the word count for summing purposes
+    return wordCount;
+  }
+  // Function to calculate and display total word count from selected sections
+  function displayTotalWordCount() {
+    // Calculate word count for each section and accumulate the total
+    const IntroductionCount = displayWordCount("Introduction_InText");
+    const AnalysisCount = displayWordCount("Analysis_InText");
+    // Calculate the sum of all selected sections
+    const totalWordCount = IntroductionCount + AnalysisCount;
+    // Display the total word count
+    document.getElementById("totalWordCount").innerText = `Total word count: ${totalWordCount}`;
+  }
+  // Run the function for specific sections and display total count when the page loads
+  window.onload = displayTotalWordCount;
+</script>
   
   
   
@@ -41,32 +121,33 @@
   <header>
     <h1>Engineering Life: The Impact of Artificial Hearts on Patient Care</h1>
   </header>
-  <p>Artificial heart is one of many innovations in medical technology. An mechanical device designed to replace or support the function of a damaged or failing heart. Showing that in the medical industry that any failing organs can be replaced to extend people live. The top leading cause of death around the world is ischemic heart disease, responsible for 13% of the world’s total death. With a greater use of artificial hearts, it could lead to a decrease of heart related deaths. Artificial hearts can be used temporally during an end stage heart disease until a heart donor is available for the patient, which allows patient lives to be extend for a period of time. </p>
+ 
+  <p id="Introduction_InText">Artificial heart is one of many innovations in medical technology. An mechanical device designed to replace or support the function of a damaged or failing heart. Showing that in the medical industry that any failing organs can be replaced to extend people live. The top leading cause of death around the world is ischemic heart disease, responsible for 13% of the world’s total death. With a greater use of artificial hearts, it could lead to a decrease of heart related deaths. Artificial hearts can be used temporally during an end stage heart disease until a heart donor is available for the patient, which allows patient lives to be extend for a period of time. </p>
 
   <div style="display: flex;">
-    <p>Ischemic heart disease remains the world’s leading cause of death, responsible for 13% of all global death. (World Health Organization, 2023) The number of deaths from this disease has risen significantly over the past two decades, increasing by 2.7 million to a total of 9 million deaths in 2021. (World Health Organization, 2023) This highlights the urgent need for innovative solutions and preventive measures to address the growing burden of cardiovascular diseases (World Health Organization, 2023). Efforts to raise awareness about heart disease, promote healthy lifestyles, and provide better access to healthcare are essential to slowing down this trend.</p>
+    <p id="Analysis_InText">Ischemic heart disease remains the world’s leading cause of death, responsible for 13% of all global death. (World Health Organization, 2023) The number of deaths from this disease has risen significantly over the past two decades, increasing by 2.7 million to a total of 9 million deaths in 2021. (World Health Organization, 2023) This highlights the urgent need for innovative solutions and preventive measures to address the growing burden of cardiovascular diseases (World Health Organization, 2023). Efforts to raise awareness about heart disease, promote healthy lifestyles, and provide better access to healthcare are essential to slowing down this trend.</p>
     <div class="image">
         <img src="IMG_0156.png" alt="Leading cause of death" width="300">
     </div>
   </div>
-  <p>Each year, more than 2 million people around the world have an open-heart surgery to treat various heart problems. (National Heart, Lung, and Blood Institute, 2024) Heart surgery is required in approximately 10%–20% of patients diagnosed with heart disease, depending on the condition and severity. For heart transplants, around 3567 individuals are currently on the waiting list in the U.S. as of late 2024, while only about 4000 heart transplants are performed annually due to shortage of donors.  (UNOS, 2024). Across the UK hundred of hospitals patients are waiting for a hearty transplant. The waiting list for hearts has increased more than 130% in the last decade. (NHS Organ Donation, 2024). This shows how urgent the need for donor hearts has become, as demand continues to outpace supply. As artificial heart technology continues to improve, it offers hope for extending survival times and reducing the number of deaths caused by organ shortages.</p>
-  <p>The average wait for an adult who needs a heart transplant is nearly three years, that is an average of 1085 days for patients who never been on the urgent waiting list and 30 days for those who have been on the urgent waiting list. (NHS Organ Donation, 2024). Sadly 21 patients died last year before they could receive the heart transplant they desperately needed, and 201 people have lost their lives in the last five years in need of a heart transplant. (NHS Organ Donation, 2024). Many individuals die while waiting for a suitable donor, The ability to use artificial hearts also means patients are able to wait longer. As artificial heart technology continues to improve, it offers hope for extending survival times and reducing the number of deaths associated with organ shortages. In this article I will discuss the two main types of artificial hearts including their benefits and limitations. By understanding these technologies, we can better appreciate their role in modern cardiology and the challenges they face as potential long term solutions.</p>
+  <p id="Analysis_InText">Each year, more than 2 million people around the world have an open-heart surgery to treat various heart problems. (National Heart, Lung, and Blood Institute, 2024) Heart surgery is required in approximately 10%–20% of patients diagnosed with heart disease, depending on the condition and severity. For heart transplants, around 3567 individuals are currently on the waiting list in the U.S. as of late 2024, while only about 4000 heart transplants are performed annually due to shortage of donors.  (UNOS, 2024). Across the UK hundred of hospitals patients are waiting for a hearty transplant. The waiting list for hearts has increased more than 130% in the last decade. (NHS Organ Donation, 2024). This shows how urgent the need for donor hearts has become, as demand continues to outpace supply. As artificial heart technology continues to improve, it offers hope for extending survival times and reducing the number of deaths caused by organ shortages.</p>
+  <p id="Analysis_InText">The average wait for an adult who needs a heart transplant is nearly three years, that is an average of 1085 days for patients who never been on the urgent waiting list and 30 days for those who have been on the urgent waiting list. (NHS Organ Donation, 2024). Sadly 21 patients died last year before they could receive the heart transplant they desperately needed, and 201 people have lost their lives in the last five years in need of a heart transplant. (NHS Organ Donation, 2024). Many individuals die while waiting for a suitable donor, The ability to use artificial hearts also means patients are able to wait longer. As artificial heart technology continues to improve, it offers hope for extending survival times and reducing the number of deaths associated with organ shortages. In this article I will discuss the two main types of artificial hearts including their benefits and limitations. By understanding these technologies, we can better appreciate their role in modern cardiology and the challenges they face as potential long term solutions.</p>
   <h1>TOTAL ARTIFICIAL HEART (TAH)</h1>
   <div style="display: flex;">
-    <p>The two main types of artificial hearts, total artificial heart and Left Ventricular Assist Devices. (National Heart, Lung, and Blood Institute, 2024) A Total Artificial Heart (TAH) is a mechanical pump used to replace both the ventricles and valves of a severely damaged heart. It is typically used for patients who are no longer candidates for a heart transplant. The device takes over the heart's pumping function, circulating blood through the body and lungs, and acts as a temporary solution until a donor heart is available. While TAH is highly effective in restoring blood circulation, it has limitations such as the need for continuous external power supply and increased risk of complications like infection or blood clots (National Heart, Lung, and Blood Institute, 2024). Additionally, patients with a TAH must follow strict medical protocols and often face lifestyle adjustments, such as limitations on physical activity, due to the device's external components. This can make daily life more challenging for patients and their families.</p>
+    <p id="Analysis_InText">The two main types of artificial hearts, total artificial heart and Left Ventricular Assist Devices. (National Heart, Lung, and Blood Institute, 2024) A Total Artificial Heart (TAH) is a mechanical pump used to replace both the ventricles and valves of a severely damaged heart. It is typically used for patients who are no longer candidates for a heart transplant. The device takes over the heart's pumping function, circulating blood through the body and lungs, and acts as a temporary solution until a donor heart is available. While TAH is highly effective in restoring blood circulation, it has limitations such as the need for continuous external power supply and increased risk of complications like infection or blood clots (National Heart, Lung, and Blood Institute, 2024). Additionally, patients with a TAH must follow strict medical protocols and often face lifestyle adjustments, such as limitations on physical activity, due to the device's external components. This can make daily life more challenging for patients and their families.</p>
     <div class="image">
         <img src="TAH.png" alt="Total Artificial Heart (TAH)" width="300">
     </div>
   </div>
   <h1>LEFT VENTRICULAR ASSIST DEVICE (LVAD)</h1>
   <div style="display: flex;">
-    <p>A Left Ventricular Assist Devices (LVAD) , on the other hand, is used primarily to support a weakened left ventricle, the heart's chamber responsible for pumping oxygen-rich blood to the body. (Mayo Clinic, 2024) Unlike TAH, an LVAD doesn't replace the heart entirely; it assists the left ventricle by drawing blood from it and helping pump it into the aorta. LVADs are often used as a bridge to heart transplant or as a long-term therapy for those not eligible for a transplant. Their benefits include the ability to significantly improve quality of life, increase survival rates, and reduce symptoms of heart failure. Patients with an LVAD often report improved energy levels and reduced symptoms like shortness of breath, enabling them to perform daily activities more effectively. (Mayo Clinic, 2024) Some patients with LVADs can even return to work or pursue hobbies they had to give up due to their heart condition. However, they also come with limitations, such as the risk of blood clots, stroke, and the need for regular monitoring and maintenance. </p>
+    <p id="Analysis_InText">A Left Ventricular Assist Devices (LVAD) , on the other hand, is used primarily to support a weakened left ventricle, the heart's chamber responsible for pumping oxygen-rich blood to the body. (Mayo Clinic, 2024) Unlike TAH, an LVAD doesn't replace the heart entirely; it assists the left ventricle by drawing blood from it and helping pump it into the aorta. LVADs are often used as a bridge to heart transplant or as a long-term therapy for those not eligible for a transplant. Their benefits include the ability to significantly improve quality of life, increase survival rates, and reduce symptoms of heart failure. Patients with an LVAD often report improved energy levels and reduced symptoms like shortness of breath, enabling them to perform daily activities more effectively. (Mayo Clinic, 2024) Some patients with LVADs can even return to work or pursue hobbies they had to give up due to their heart condition. However, they also come with limitations, such as the risk of blood clots, stroke, and the need for regular monitoring and maintenance. </p>
     <div class="image">
         <img src="LVAD.png" alt="Left Ventricular Assist Device (LVAD)" width="300">
     </div>
   </div>
-  <p>Both TAH and LVADs represent important advancements in heart failure treatment. They offer hope for patients who might otherwise have limited options, particularly given the global shortage of donor hearts. Continued research and development in artificial heart technology could lead to devices that are smaller, more efficient, and easier to use. This would allow more patients to benefit from these life-saving innovations.</p>
-  <p>In conclusion, while artificial hearts are an important solution for heart failure, their widespread use will likely remain limited for now due to high costs and technological constraints. However, ongoing advancements in the field could make these devices a more common part of heart disease treatment in the future, especially as the demand for heart transplants continues to rise.</p>
+  <p id="Analysis_InText">Both TAH and LVADs represent important advancements in heart failure treatment. They offer hope for patients who might otherwise have limited options, particularly given the global shortage of donor hearts. Continued research and development in artificial heart technology could lead to devices that are smaller, more efficient, and easier to use. This would allow more patients to benefit from these life-saving innovations.</p>
+  <p id="Analysis_InText">In conclusion, while artificial hearts are an important solution for heart failure, their widespread use will likely remain limited for now due to high costs and technological constraints. However, ongoing advancements in the field could make these devices a more common part of heart disease treatment in the future, especially as the demand for heart transplants continues to rise.</p>
   
 </body>
 </html>
